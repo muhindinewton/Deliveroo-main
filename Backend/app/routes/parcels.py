@@ -5,6 +5,7 @@ from app.database.database import get_db
 from app.schemas.parcel import ParcelCreate, ParcelOut, ParcelUpdate
 from app.models.parcel import Parcel
 from app.models.user import User
+from app.models.weight_category import WeightCategory
 from sqlalchemy.inspection import inspect
 
 router = APIRouter(prefix="/parcels", tags=["Parcels"])
@@ -36,6 +37,24 @@ def create_parcel(parcel : ParcelCreate, db: Session = Depends(get_db)):
     parcel_data = parcel.dict()
     if 'status' not in parcel_data or not parcel_data['status']:
         parcel_data['status'] = 'Pending'
+    
+    # Determine weight category based on parcel weight
+    weight = parcel_data.get('weight', 0)
+    weight_category = db.query(WeightCategory).filter(
+        WeightCategory.min_weight <= weight,
+        WeightCategory.max_weight >= weight
+    ).first()
+    
+    if not weight_category:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"No weight category found for weight {weight} kg"
+        )
+    
+    # Set weight category and price automatically
+    parcel_data['weight_category_id'] = weight_category.id
+    parcel_data['price'] = weight_category.price
+    
     new_parcel = Parcel(**parcel_data)
     db.add(new_parcel)
     db.commit()

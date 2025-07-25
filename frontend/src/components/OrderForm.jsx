@@ -26,11 +26,11 @@ function OrderForm() {
 
     if (!weight || isNaN(weightValue) || weightValue <= 0) return 0;
 
-    if (weightValue > 25) return null;
+    if (weightValue > 10) return "Weight exceeds maximum limit (10kg)";
 
-    if (weightValue <= 5) return 300;
-    else if (weightValue <= 15) return 500;
-    else return 1000;
+    if (weightValue <= 2) return 100;
+    else if (weightValue <= 5) return 200;
+    else return 300;
   };
 
   function handleChange(e) {
@@ -52,10 +52,16 @@ function OrderForm() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const price = calculatePrice();
+    const weightValue = parseFloat(weight);
 
-    if (price === null) {
-      alert("Invalid weight. Must be between 0 and 25 kg.");
+    // Validate weight
+    if (!weight || isNaN(weightValue) || weightValue <= 0) {
+      alert("Please enter a valid weight greater than 0.");
+      return;
+    }
+
+    if (weightValue > 10) {
+      alert("Weight cannot exceed 10kg.");
       return;
     }
 
@@ -87,7 +93,7 @@ function OrderForm() {
           destination_lat: orderForm.destinationCoords[0],
           destination_lng: orderForm.destinationCoords[1],
           weight: parseFloat(weight),
-          price: price,
+          // Price is now calculated automatically by the backend
         };
         fetch("http://127.0.0.1:8000/parcels", {
           method: "POST",
@@ -211,7 +217,7 @@ function OrderForm() {
             Estimated Shipping Fee
           </h2>
 
-          {calculatePrice() !== null ? (
+          {typeof calculatePrice() === 'number' ? (
             <div className="flex items-center gap-x-4">
               <FontAwesomeIcon icon={faTruckFast} className="text-[#73C322]" />
               <h2 className="italic text-lg font-bold">
@@ -220,9 +226,16 @@ function OrderForm() {
             </div>
           ) : (
             <p className="text-red-500 text-sm">
-              Weight exceeds 25kg limit. Please adjust.
+              {calculatePrice()}
             </p>
           )}
+          
+          <div className="mt-3 text-xs text-gray-600">
+            <p><strong>Pricing:</strong></p>
+            <p>• Light (0-2kg): KShs. 100</p>
+            <p>• Medium (2.1-5kg): KShs. 200</p>
+            <p>• Heavy (5.1-10kg): KShs. 300</p>
+          </div>
         </div>
 
         <button className="bg-[#73C322] text-white p-3 rounded-[8px] cursor-pointer">

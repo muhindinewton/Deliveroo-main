@@ -29,7 +29,7 @@ class ParcelCreate(BaseModel):
     weight: float
     weight_category_id: Optional[int] = None
     user_id: Optional[int] = None
-    price: int
+    price: Optional[int] = None  # Made optional since it's calculated automatically
     recipient_name: str
 
 class ParcelOut(BaseModel):
