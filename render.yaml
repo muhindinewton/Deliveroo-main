@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: deliveroo-api
+    env: python
+    region: oregon # or your preferred region
+    plan: starter # or your preferred plan
+    buildCommand: "./build.sh"
+    startCommand: "./start.sh"
+    envVars:
+      - key: SQLALCHEMY_DATABASE_URL
+        value: postgresql://deliveroo_db_dvd1_user:JMOgXR4K5qtDJe83gOBIo3mOWhVdRkoG@dpg-d21omb95pdvs7386vi80-a.oregon-postgres.render.com/deliveroo_db_dvd1
+      - key: JWT_SECURITY_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: APP_NAME
+        value: Deliveroo API
+      - key: PYTHON_VERSION
+        value: 3.11
