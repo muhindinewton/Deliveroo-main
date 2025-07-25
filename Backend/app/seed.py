@@ -28,9 +28,9 @@ def seed():
     try:
         # Seed weight categories
         weight_categories = [
-            {"min_weight": 0.0, "max_weight": 2.0, "price": 100, "label": "Light"},
-            {"min_weight": 2.1, "max_weight": 5.0, "price": 200, "label": "Medium"},
-            {"min_weight": 5.1, "max_weight": 10.0, "price": 300, "label": "Heavy"},
+            {"min_weight": 0.0, "max_weight": 5.0, "price": 300, "label": "Light"},
+            {"min_weight": 5.1, "max_weight": 15.0, "price": 500, "label": "Medium"},
+            {"min_weight": 15.1, "max_weight": 25.0, "price": 1000, "label": "Heavy"},
         ]
 
         for wc_data in weight_categories:

@@ -26,11 +26,11 @@ function OrderForm() {
 
     if (!weight || isNaN(weightValue) || weightValue <= 0) return 0;
 
-    if (weightValue > 10) return "Weight exceeds maximum limit (10kg)";
+    if (weightValue > 25) return "Weight exceeds maximum limit (25kg)";
 
-    if (weightValue <= 2) return 100;
-    else if (weightValue <= 5) return 200;
-    else return 300;
+    if (weightValue <= 5) return 300;
+    else if (weightValue <= 15) return 500;
+    else return 1000;
   };
 
   function handleChange(e) {
@@ -60,8 +60,8 @@ function OrderForm() {
       return;
     }
 
-    if (weightValue > 10) {
-      alert("Weight cannot exceed 10kg.");
+    if (weightValue > 25) {
+      alert("Weight cannot exceed 25kg.");
       return;
     }
 
@@ -201,12 +201,13 @@ function OrderForm() {
               id="weight"
               placeholder="1"
               min="0"
+              max="25"
               step="0.1"
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
             />
             <p className="text-sm text-[#7a7a82]">
-              The weight of the parcel in kilograms.
+              The weight of the parcel in kilograms (max 25kg).
             </p>
           </label>
         </div>
@@ -232,9 +233,9 @@ function OrderForm() {
           
           <div className="mt-3 text-xs text-gray-600">
             <p><strong>Pricing:</strong></p>
-            <p>• Light (0-2kg): KShs. 100</p>
-            <p>• Medium (2.1-5kg): KShs. 200</p>
-            <p>• Heavy (5.1-10kg): KShs. 300</p>
+            <p>• Light (0-5kg): KShs. 300</p>
+            <p>• Medium (5.1-15kg): KShs. 500</p>
+            <p>• Heavy (15.1-25kg): KShs. 1000</p>
           </div>
         </div>
 
