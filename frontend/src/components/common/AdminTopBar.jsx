@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Cube from "../../assets/cube.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 function AdminTopBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [profileImage, setProfileImage] = useState('https://upload.wikimedia.org/wikipedia/en/5/5f/Original_Doge_meme.jpg');
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Try to get profile image from localStorage
@@ -17,6 +18,16 @@ function AdminTopBar() {
 
   function toggleProfileDropDown() {
     setIsOpen((prev) => !prev);
+  }
+
+  function handleLogout() {
+    // Clear authentication data
+    localStorage.removeItem('token');
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('profileImage');
+    
+    // Redirect to landing page
+    navigate('/');
   }
 
   return (
@@ -39,11 +50,12 @@ function AdminTopBar() {
               </li>
             </Link>
 
-            <Link to="/user-signup">
-              <li className="px-4 py-2 hover:bg-[#DCFCE7] cursor-pointer">
-                Logout
-              </li>
-            </Link>
+            <li 
+              className="px-4 py-2 hover:bg-[#DCFCE7] cursor-pointer"
+              onClick={handleLogout}
+            >
+              Logout
+            </li>
           </ul>
         </div>
       )}

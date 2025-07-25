@@ -1,12 +1,24 @@
 import React from "react";
 import { Grid, User, LogOut } from "react-feather";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from '../assets/cube.png'
 
 const AdminSidebar = () => {
+  const navigate = useNavigate();
+  
   const navItems = [
     { to: "/admin", label: "Dashboard", icon: Grid },
   ];
+
+  function handleLogout() {
+    // Clear authentication data
+    localStorage.removeItem('token');
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('profileImage');
+    
+    // Redirect to landing page
+    navigate('/');
+  }
 
   return (
     <div className="basis-[16%] relative px-4 py-6 min-h-[100vh] bg-[#09090B] text-white">
@@ -32,11 +44,14 @@ const AdminSidebar = () => {
         </ul>
       </nav>
 
-      <button className="text-sm hover:bg-[#18181A] w-[90%] cursor-pointer absolute bottom-5 p-2">
-        <Link to="/admin-signup" className="flex items-center space-x-2">
+      <button 
+        className="text-sm hover:bg-[#18181A] w-[90%] cursor-pointer absolute bottom-5 p-2"
+        onClick={handleLogout}
+      >
+        <span className="flex items-center space-x-2">
           <LogOut className="mx-3" />
           Logout
-        </Link>
+        </span>
       </button>
     </div>
   );
